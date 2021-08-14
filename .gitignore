@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+
+venv
+cmake-build-debug
+cmake-build-release
+.idea
+__pycache__
+*.cbp
+*.so

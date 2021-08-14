@@ -1,0 +1,6 @@
+[submodule "external/delfem2"]
+	path = external/delfem2
+	url = https://github.com/nobuyuki83/delfem2.git
+[submodule "external/pybind11"]
+	path = external/pybind11
+	url = https://github.com/pybind/pybind11.git
