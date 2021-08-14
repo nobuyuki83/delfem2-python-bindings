@@ -124,10 +124,24 @@ class Camera:
       self.scale)
     return
 
-  '''
-  def set_rotation(self, camera_rotation:numpy.ndarray):
-    self.quat = quat_from_axis(camera_rotation)
+  def adjust_scale_trans(self, aPos:numpy.ndarray):
+    assert( aPos.shape == (2,3) )
+    (win_w,win_h) = gl.glGetIntegerv(gl.GL_VIEWPORT)[2:]
+    asp = float(win_w) / win_h
+    vh1 = (aPos[1,0]-aPos[0,0])/asp
+    vh0 = (aPos[1,1]-aPos[1,0])
+    self.pivot[0] = -0.5*(aPos[0,0]+aPos[1,0])
+    self.pivot[1] = -0.5*(aPos[0,1]+aPos[1,1])
+    self.pivot[2] = -0.5*(aPos[0,2]+aPos[1,2])
+    self.scr_trans[0] = 0.0
+    self.scr_trans[1] = 0.0
+    self.view_height = max(vh0,vh1)
+    self.scale = 1.0
 
+  def set_rotation(self, rot:numpy.ndarray):
+    self.quat = quaternion.from_rotation_vector(rot)
+
+  '''
   def adjust_scale_trans(self, aPos):
     minmax_x = minMaxLoc(aPos, [1., 0., 0.])
     minmax_y = minMaxLoc(aPos, [0., 1., 0.])

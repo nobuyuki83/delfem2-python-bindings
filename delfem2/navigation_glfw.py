@@ -1,4 +1,5 @@
 
+import numpy
 import glfw
 import delfem2.camera
 

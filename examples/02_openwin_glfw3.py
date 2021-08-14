@@ -6,20 +6,16 @@
 ####################################################################
 
 import OpenGL.GL as gl
-import delfem2 as dfm2
-import delfem2.window_glfw
 import os
-
-
-def draw_func():
-    gl.glDisable(gl.GL_LIGHTING)
-    gl.glColor3d(0, 0, 0)
-    dfm2.draw_meshtri3_edge(V, F)
-
+import delfem2 as dfm2
+import delfem2.show_3d
+import delfem2.drawer_axisxyz
+import delfem2.drawer_mesh
 
 V, F = dfm2.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
-V *= 0.02
+V *= 0.03
 
-win = dfm2.window_glfw.WindowGLFW(1.0, winsize=(400, 300))
-win.list_func_draw.append(draw_func)
-win.draw_loop()
+axis_xyz = delfem2.drawer_axisxyz.AxisXYZ()
+drawer = delfem2.drawer_mesh.DrawerMesh(V,F)
+
+dfm2.show_3d.show_3d([axis_xyz,drawer], winsize=(400, 300))

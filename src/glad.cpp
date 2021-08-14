@@ -4,7 +4,9 @@
 #  define NOMINMAX   // to remove min,max macro
 #  include <windows.h>  // should be put before opengl headers
 #endif
+
 #include "glad/glad.h"
+#include "delfem2/opengl/funcs.h"
 
 namespace py = pybind11;
 
@@ -18,4 +20,7 @@ bool MyGladLoadGLLoader(){
 void init_glad_glfw(py::module &m) {
   m.def("gladLoadGL",
         &MyGladLoadGLLoader, "");
+
+  m.def("setup_glsl",
+        &delfem2::opengl::setUpGLSL, "");
 }
