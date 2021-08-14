@@ -5,23 +5,19 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-#include <pybind11/pybind11.h>
-#include <pybind11/numpy.h>
 #include <iostream>
-#include <vector>
 #include <deque>
+#include <pybind11/pybind11.h>
 
 namespace py = pybind11;
 
-// ----------------------------------------------------------
-
-void CppSayHelloWorld(){
-  std::cout << "hello world!" << std::endl;
-}
+void init_mshio(py::module &);
+void init_opengleigen_funcs(py::module &);
 
 PYBIND11_MODULE(delfem2, m) {
   m.doc() = "my_cpp_module";
-  m.def("say_hello_world", &CppSayHelloWorld);
+  init_mshio(m);
+  init_opengleigen_funcs(m);
 }
 
 

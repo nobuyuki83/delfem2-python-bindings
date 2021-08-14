@@ -1,5 +1,4 @@
 
-
 cmake_minimum_required(VERSION 3.12)
 
 enable_language(CXX)
@@ -25,11 +24,14 @@ add_subdirectory(${PYBIND11_DIR} pybind11)
 
 include_directories(
     ${PROJECT_SOURCE_DIR}/external/delfem2/include
+    ${PROJECT_SOURCE_DIR}/external/eigen
 )
 
 file(GLOB SRC_FILES
     ${PROJECT_SOURCE_DIR}/src/*.cpp)
 set(INPUT_SRC  ${SRC_FILES})
+
+message(STATUS "src paths: ${SRC_FILES}")
 
 pybind11_add_module(${PROJECT_NAME}
   ${INPUT_SRC} )
