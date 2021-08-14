@@ -21,7 +21,11 @@ def motion_rot(
   dy = scrny1 - scrny0
   a = math.sqrt(dx * dx + dy * dy)
   if a > 1.0e-3:
-    dq = numpy.quaternion(math.cos(a*0.5), +dy * math.sin(a*0.5) / a, -dx * math.sin(a*0.5) / a, 0.0)
+    dq = numpy.quaternion(
+      math.cos(a*0.5),
+      +dy * math.sin(a*0.5) / a,
+      -dx * math.sin(a*0.5) / a,
+      0.0)
   else:
     dq = numpy.quaternion(1,-dy,dx,0.0)
   if a != 0.0:

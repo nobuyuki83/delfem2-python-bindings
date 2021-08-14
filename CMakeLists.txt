@@ -16,8 +16,13 @@ project(delfem2)
 ##########################################################
 # dependencies setting
 
+# pybind11
 set(PYBIND11_DIR "${PROJECT_SOURCE_DIR}/external/pybind11")
 add_subdirectory(${PYBIND11_DIR} pybind11)
+
+# glfw
+# set(GLFW_ROOT "${PROJECT_SOURCE_DIR}/external/libglfw")
+# include(${CMAKE_CURRENT_SOURCE_DIR}/external/FindGLFW.cmake)
 
 ##########################################################
 # build setting
@@ -25,19 +30,24 @@ add_subdirectory(${PYBIND11_DIR} pybind11)
 include_directories(
     ${PROJECT_SOURCE_DIR}/external/delfem2/include
     ${PROJECT_SOURCE_DIR}/external/eigen
+    ${PROJECT_SOURCE_DIR}/external/glad3/include
+#    ${GLFW_INCLUDE_DIR}
 )
 
 file(GLOB SRC_FILES
     ${PROJECT_SOURCE_DIR}/src/*.cpp)
-set(INPUT_SRC  ${SRC_FILES})
+set(INPUT_SRC
+    ${SRC_FILES}
+    ${PROJECT_SOURCE_DIR}/external/glad3/src/glad.c
+    )
 
 message(STATUS "src paths: ${SRC_FILES}")
 
 pybind11_add_module(${PROJECT_NAME}
-  ${INPUT_SRC} )
+    ${INPUT_SRC} )
 
-#target_link_libraries(${PROJECT_NAME}
-#  PRIVATE ${INPUT_LIBRARY})
+#target_link_libraries(${PROJECT_NAME} PRIVATE
+#    ${GLFW_LIBRARIES})
 
 # build & link
 ###########################################

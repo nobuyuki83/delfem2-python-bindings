@@ -13,11 +13,15 @@ namespace py = pybind11;
 
 void init_mshio(py::module &);
 void init_opengleigen_funcs(py::module &);
+void init_opengl_r2t(py::module &m);
+void init_glad_glfw(py::module &m);
 
 PYBIND11_MODULE(delfem2, m) {
   m.doc() = "my_cpp_module";
   init_mshio(m);
   init_opengleigen_funcs(m);
+  init_opengl_r2t(m);
+  init_glad_glfw(m);
 }
 
 
