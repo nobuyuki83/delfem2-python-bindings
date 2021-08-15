@@ -18,7 +18,7 @@ bool MyGladLoadGLLoader(){
 }
 
 void init_glad_glfw(py::module &m) {
-  m.def("gladLoadGL",
+  m.def("glad_load_gl",
         &MyGladLoadGLLoader, "");
 
   m.def("setup_glsl",

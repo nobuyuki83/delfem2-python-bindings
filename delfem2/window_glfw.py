@@ -7,7 +7,7 @@
 
 import OpenGL.GL as gl
 import glfw
-import delfem2.navigation_glfw
+from delfem2.navigation_glfw import NavigationGLFW
 
 class WindowGLFW:
     """
@@ -23,10 +23,13 @@ class WindowGLFW:
             return
         if not isVisible:
             glfw.window_hint(glfw.VISIBLE, False)
-        self.win = glfw.create_window(winsize[0], winsize[1], '3D Window', None, None)
+        self.win = glfw.create_window(
+            winsize[0], winsize[1],
+            '3D Window',
+            None, None)
         glfw.make_context_current(self.win)
         ###
-        self.wm = delfem2.navigation_glfw.NavigationGLFW(view_height)
+        self.wm = NavigationGLFW(view_height)
         self.list_func_mouse = []
         self.list_func_motion = []
         self.list_func_step_time = []

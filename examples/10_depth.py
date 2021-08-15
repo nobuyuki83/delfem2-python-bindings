@@ -11,7 +11,8 @@ import OpenGL.GL as gl
 from PIL import Image
 
 import delfem2 as dfm2
-import delfem2.framebuffer_glfw
+import delfem2.drawer_mesh
+from delfem2.framebuffer_glfw import FrameBufferGLFW
 
 def main():
   V, F = dfm2.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
@@ -20,8 +21,8 @@ def main():
   sampler = dfm2.Render2Tex()
   sampler.set_texture_property(size_res_width=256,size_res_height=256, is_rgba_8ui=True)
 
-  with dfm2.framebuffer_glfw.FrameBufferGLFW([512, 512], format_color="4byte", is_depth=True):
-    dfm2.gladLoadGL()
+  with FrameBufferGLFW([512, 512], format_color="4byte", is_depth=True):
+    dfm2.glad_load_gl()
     gl.glEnable(gl.GL_TEXTURE_2D)
     gl.glActiveTexture(gl.GL_TEXTURE0)
     sampler.init_gl()
@@ -31,10 +32,12 @@ def main():
     gl.glDisable(gl.GL_LIGHTING)
     gl.glDisable(gl.GL_BLEND)
     gl.glColor3d(0,0,0)
-    dfm2.draw_meshtri3_edge(V, F)
+    delfem2.drawer_mesh.DrawerMesh(V,F, dfm2.TRI,
+                                   is_draw_edge=False,is_draw_face=True).draw()
     sampler.end()
     numpy_depth = dfm2.render2tex_depth_buffer_numpy(sampler)
     numpy_color = dfm2.render2tex_color_buffer_4byte(sampler)
+
     print(numpy.min(numpy_depth), numpy.max(numpy_depth))
     pil_image = Image.fromarray(numpy_depth*255)
     pil_image.show()

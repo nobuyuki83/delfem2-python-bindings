@@ -1,13 +1,15 @@
 
 from typing import List
-import delfem2.window_glfw
+from delfem2.window_glfw import WindowGLFW
 
 class FrameBufferGLFW:
     def __init__(self,
                  win_size: List[int],
                  format_color: str,
                  is_depth: bool):
-        self.win = delfem2.window_glfw.WindowGLFW(isVisible=False)
+        self.win = WindowGLFW(
+            winsize=win_size,
+            isVisible=False)
         self.is_open = True
 
     def __enter__(self):

@@ -1,7 +1,7 @@
 import numpy
 import OpenGL.GL as gl
-import delfem2.window_glfw
-from .delfem2 import gladLoadGL, setup_glsl
+from delfem2.window_glfw import WindowGLFW
+from .delfem2 import glad_load_gl, setup_glsl
 
 
 def add_aabb3(lhs: numpy.ndarray, rhs: numpy.ndarray):
@@ -32,11 +32,11 @@ def show_3d(list_obj: list,
     """
 
     #### initialize window
-    window = delfem2.window_glfw.WindowGLFW(winsize=winsize)
+    window = WindowGLFW(winsize=winsize)
     if not window.is_valid:
         print("aborting opening window..")
         return
-    delfem2.gladLoadGL()
+    glad_load_gl()
     window.color_bg = bgcolor
     for obj in list_obj:
         if hasattr(obj, 'init_gl'):
@@ -54,8 +54,8 @@ def show_3d(list_obj: list,
     #### glsl compile
     id_shader_program = 0
     if glsl_vrt != "" and glsl_frg != "":
-        delfem2.gladLoadGL()
-        id_shader_program = delfem2.setup_glsl(glsl_vrt, glsl_frg)
+        glad_load_gl()
+        id_shader_program = setup_glsl(glsl_vrt, glsl_frg)
     #### adjust scale
     aabb3 = numpy.array([[+1., +1., +1.], [-1., -1, -1.]])
     for obj in list_obj:
@@ -65,12 +65,12 @@ def show_3d(list_obj: list,
         aabb3 = numpy.array([[-1., -1., -1.], [+1., +1., +1.]])
     window.wm.camera.adjust_scale_trans(aabb3)
     window.wm.camera.scale = camera_scale
-    #### set camera rotation
+    ## set camera rotation
     if len(camera_rotation) == 3:
         window.wm.camera.set_rotation(camera_rotation)
-    #### initalizing opengl
+    ## initalizing opengl
     gl.glEnable(gl.GL_POLYGON_OFFSET_FILL)
     gl.glPolygonOffset(1.1, 4.0)
     gl.glUseProgram(id_shader_program)
-    #### enter loop
+    ## enter loop
     window.draw_loop(nframe=nframe)

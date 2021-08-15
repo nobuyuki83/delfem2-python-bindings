@@ -12,10 +12,11 @@
 #include "delfem2/eigen/msh_io.h"
 
 namespace py = pybind11;
+namespace dfm2 = delfem2;
 
 // ----------------------------------------------------------
 
-void init_mshio(py::module &m) {
+void init_msh_io(py::module &m) {
   m.def("read_triangle_mesh",
         &ReadTriangleMeshObj, "");
 }
