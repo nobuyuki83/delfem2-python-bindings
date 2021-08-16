@@ -35,13 +35,13 @@ jobs:
           git submodule update --init external/delfem2
           git submodule update --init external/pybind11
           git submodule update --init external/eigen
-          sudo apt-get install build-essential cmake          
+#          sudo apt-get install build-essential cmake          
 
       # Runs a set of commands using the runners shell
       - name: build
         run: |
           mkdir build
           cd build
-          camke ..
+          cmake ..
           make
           
