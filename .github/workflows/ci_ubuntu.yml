@@ -33,9 +33,16 @@ jobs:
       - name: install dependencies
         run: |
           git submodule update --init external/delfem2
-          git submodule update --init external/pybind11
+          cd external/delfem2
+          git pull origin master
+          cd ../../
+
+          git submodule update --init external/pybind11          
+
           git submodule update --init external/eigen
+
           # sudo apt-get install build-essential cmake          
+          
           sudo apt-get install libgl-dev
 
 
