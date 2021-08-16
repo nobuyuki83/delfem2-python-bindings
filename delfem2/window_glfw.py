@@ -8,6 +8,7 @@
 import OpenGL.GL as gl
 import glfw
 from delfem2.navigation_glfw import NavigationGLFW
+from delfem2.camera import Camera
 
 class WindowGLFW:
     """
@@ -29,7 +30,8 @@ class WindowGLFW:
             None, None)
         glfw.make_context_current(self.win)
         ###
-        self.wm = NavigationGLFW(view_height)
+        self.nav = NavigationGLFW(view_height)
+        self.camera = Camera()
         self.list_func_mouse = []
         self.list_func_motion = []
         self.list_func_step_time = []
@@ -61,7 +63,7 @@ class WindowGLFW:
             gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
             gl.glEnable(gl.GL_POLYGON_OFFSET_FILL)
             gl.glPolygonOffset(1.1, 4.0)
-            self.wm.camera.set_gl_camera()
+            self.camera.set_gl_camera()
             for func_step_time in self.list_func_step_time:
                 func_step_time()
             for draw_func in self.list_func_draw:
@@ -71,7 +73,7 @@ class WindowGLFW:
             iframe += 1
             if nframe > 0 and iframe > nframe:
                 break
-            if self.wm.isClose:
+            if self.nav.isClose:
                 break
         self.close()
 
@@ -80,7 +82,7 @@ class WindowGLFW:
         glfw.terminate()
 
     def mouse(self, win0, btn, action, mods):
-        self.wm.mouse(win0, btn, action, mods)
+        self.nav.mouse(win0, btn, action, mods)
         mMV = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
         mPj = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
         '''
@@ -92,9 +94,9 @@ class WindowGLFW:
         '''
 
     def motion(self, win0, x, y):
-        if self.wm.button == -1:
+        if self.nav.button == -1:
             return
-        self.wm.motion(win0, x, y)
+        self.nav.motion(win0, x, y, self.camera)
         mMV = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
         mPj = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
         '''
@@ -108,7 +110,7 @@ class WindowGLFW:
         '''
 
     def keyinput(self, win0, key, scancode, action, mods):
-        self.wm.keyinput(win0, key, scancode, action, mods)
+        self.nav.keyinput(win0, key, scancode, action, mods, self.camera)
         if action != glfw.PRESS:
             return
         key_name = glfw.get_key_name(key, scancode)

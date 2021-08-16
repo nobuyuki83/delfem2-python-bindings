@@ -63,11 +63,11 @@ def show_3d(list_obj: list,
             aabb3 = add_aabb3(aabb3, obj.minmax_xyz())
     if aabb3[0, 0] > aabb3[1, 0]:
         aabb3 = numpy.array([[-1., -1., -1.], [+1., +1., +1.]])
-    window.wm.camera.adjust_scale_trans(aabb3)
-    window.wm.camera.scale = camera_scale
+    window.camera.adjust_scale_trans(aabb3)
+    window.camera.scale = camera_scale
     ## set camera rotation
     if len(camera_rotation) == 3:
-        window.wm.camera.set_rotation(camera_rotation)
+        window.camera.set_rotation(camera_rotation)
     ## initalizing opengl
     gl.glEnable(gl.GL_POLYGON_OFFSET_FILL)
     gl.glPolygonOffset(1.1, 4.0)

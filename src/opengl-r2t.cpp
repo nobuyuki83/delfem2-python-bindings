@@ -2,7 +2,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <pybind11/numpy.h>
-#include <Eigen/Core>
 
 #include "delfem2/opengl/r2t.h"
 
@@ -17,7 +16,7 @@ py::array_t<float> render2tex_depth_buffer_numpy(dfm2::opengl::CRender2Tex& samp
   assert(sampler.aZ.size()==sampler.nResY*sampler.nResX);
   std::vector<size_t> strides = {sizeof(float)*sampler.nResX,sizeof(float)};
   std::vector<size_t> shape = {(size_t)sampler.nResY,(size_t)sampler.nResX};
-  size_t ndim = 2;
+  unsigned int ndim = 2;
   return py::array(py::buffer_info(sampler.aZ.data(), sizeof(float),
                                    py::format_descriptor<float>::format(),
                                    ndim, shape, strides));
@@ -33,7 +32,7 @@ py::array_t<unsigned char> render2tex_color_buffer_4byte(dfm2::opengl::CRender2T
   std::vector<size_t> shape = {
       (size_t)sampler.nResY,
       (size_t)sampler.nResX,4};
-  size_t ndim = 3;
+  unsigned int ndim = 3;
   return py::array(py::buffer_info(
       sampler.aRGBA_8ui.data(), sizeof(unsigned char),
       py::format_descriptor<unsigned char>::format(),

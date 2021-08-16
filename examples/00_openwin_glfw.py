@@ -10,22 +10,24 @@ import glfw
 import numpy as np
 
 import delfem2 as dfm2
-import delfem2.navigation_glfw
+from delfem2.navigation_glfw import NavigationGLFW
+from delfem2.camera import Camera
 import os
 
-nav = dfm2.navigation_glfw.NavigationGLFW(1.0)
+camera = Camera()
+nav = NavigationGLFW(1.0)
 
 
-def mouseButtonCB(win_glfw, btn, action, mods):
+def mouse_button_callback(win_glfw, btn, action, mods):
     nav.mouse(win_glfw, btn, action, mods)
 
 
-def mouseMoveCB(win_glfw, x, y):
-    nav.motion(win_glfw, x, y)
+def mouse_move_callback(win_glfw, x, y):
+    nav.motion(win_glfw, x, y, camera)
 
 
-def keyFunCB(win_glfw, key, scancode, action, mods):
-    nav.keyinput(win_glfw, key, scancode, action, mods)
+def keyfunc_callback(win_glfw, key, scancode, action, mods):
+    nav.keyinput(win_glfw, key, scancode, action, mods, camera)
 
 
 def main():
@@ -42,16 +44,16 @@ def main():
     #  dfm2.gl.setSomeLighting()
     gl.glEnable(gl.GL_DEPTH_TEST)
 
-    glfw.set_mouse_button_callback(win_glfw, mouseButtonCB)
-    glfw.set_cursor_pos_callback(win_glfw, mouseMoveCB)
-    glfw.set_key_callback(win_glfw, keyFunCB)
+    glfw.set_mouse_button_callback(win_glfw, mouse_button_callback)
+    glfw.set_cursor_pos_callback(win_glfw, mouse_move_callback)
+    glfw.set_key_callback(win_glfw, keyfunc_callback)
 
     while not glfw.window_should_close(win_glfw):
         gl.glClearColor(1, 1, 1, 1)
         gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
         gl.glEnable(gl.GL_POLYGON_OFFSET_FILL)
         gl.glPolygonOffset(1.1, 4.0)
-        nav.camera.set_gl_camera()
+        camera.set_gl_camera()
         gl.glColor3d(0, 0, 0)
         gl.glDisable(gl.GL_LIGHTING)
         dfm2.draw_meshtri3_edge(V, F)
