@@ -3,8 +3,15 @@ import OpenGL.GL as gl
 from delfem2.window_glfw import WindowGLFW
 from .delfem2 import glad_load_gl, setup_glsl
 
-
-def add_aabb3(lhs: numpy.ndarray, rhs: numpy.ndarray):
+def _add_aabb3(
+        lhs: numpy.ndarray,
+        rhs: numpy.ndarray) -> numpy.ndarray:
+    """
+    internal function to compute the axis-aligned bounding box (AABB) of two AABBs
+    :param lhs: AABB
+    :param rhs: AABB
+    :return: AABB that include lhs and rhs
+    """
     assert lhs.shape == rhs.shape == (2, 3)
     if lhs[0, 0] > lhs[1, 0]:
         return rhs
@@ -14,14 +21,14 @@ def add_aabb3(lhs: numpy.ndarray, rhs: numpy.ndarray):
     return numpy.array([np_cat.min(axis=2)[0], np_cat.max(axis=2)[1]])
 
 
-def show_3d(list_obj: list,
-            winsize=(400, 300),
-            bgcolor=(1, 1, 1),
-            glsl_vrt="",
-            glsl_frg="",
-            camera_rotation=(0.0, 0.0, 0.0),
-            camera_scale=1.0,
-            nframe=-1):
+def plot3(list_obj: list,
+          winsize=(400, 300),
+           bgcolor=(1, 1, 1),
+           glsl_vrt="",
+           glsl_frg="",
+           camera_rotation=(0.0, 0.0, 0.0),
+           camera_scale=1.0,
+           nframe=-1):
     """
     draw the input object into openGL window
 
@@ -60,7 +67,7 @@ def show_3d(list_obj: list,
     aabb3 = numpy.array([[+1., +1., +1.], [-1., -1, -1.]])
     for obj in list_obj:
         if hasattr(obj, 'minmax_xyz'):
-            aabb3 = add_aabb3(aabb3, obj.minmax_xyz())
+            aabb3 = _add_aabb3(aabb3, obj.minmax_xyz())
     if aabb3[0, 0] > aabb3[1, 0]:
         aabb3 = numpy.array([[-1., -1., -1.], [+1., +1., +1.]])
     window.camera.adjust_scale_trans(aabb3)

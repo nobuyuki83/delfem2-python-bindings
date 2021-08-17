@@ -18,6 +18,7 @@ void init_opengl_old_mshuni(py::module &);
 void init_opengleigen_funcs(py::module &);
 void init_glad_glfw(py::module &);
 void init_opengl_old_drawer_r2t(py::module &m);
+void init_opengl_texture(py::module &m);
 
 PYBIND11_MODULE(delfem2, m) {
   m.doc() = "my_cpp_module";
@@ -26,9 +27,10 @@ PYBIND11_MODULE(delfem2, m) {
   init_msh_elm(m);
   init_opengleigen_funcs(m);
   init_opengl_r2t(m);
-  init_glad_glfw(m);
+  init_opengl_texture(m);
   init_opengl_old_mshuni(m);
   init_opengl_old_drawer_r2t(m);
+  init_glad_glfw(m);
 }
 
 

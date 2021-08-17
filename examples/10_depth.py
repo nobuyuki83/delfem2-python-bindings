@@ -8,7 +8,6 @@
 import os
 import numpy
 import OpenGL.GL as gl
-from PIL import Image
 
 import delfem2 as dfm2
 import delfem2.drawer_mesh
