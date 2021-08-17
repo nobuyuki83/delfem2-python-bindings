@@ -56,6 +56,7 @@ class WindowGLFW:
         glfw.set_mouse_button_callback(self.win, self.mouse)
         glfw.set_cursor_pos_callback(self.win, self.motion)
         glfw.set_key_callback(self.win, self.keyinput)
+        glfw.set_scroll_callback(self.win, self.scroll)
         #    glfw.set_window_size_callback(self.win, self.window_size)
         iframe = 0
         while not glfw.window_should_close(self.win):
@@ -116,3 +117,6 @@ class WindowGLFW:
         key_name = glfw.get_key_name(key, scancode)
         for func_key in self.list_func_key:
             func_key(key_name)
+
+    def scroll(self, win0, xoffset: float, yoffset: float):
+        self.camera.scale *= pow(1.01, yoffset)

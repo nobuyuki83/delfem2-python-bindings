@@ -9,7 +9,7 @@ namespace py = pybind11;
 namespace dfm2 = delfem2;
 
 // -----------------
-
+/*
 py::array_t<float> render2tex_depth_buffer_numpy(dfm2::opengl::CRender2Tex& sampler)
 {
   sampler.CopyToCPU_Depth();
@@ -17,9 +17,10 @@ py::array_t<float> render2tex_depth_buffer_numpy(dfm2::opengl::CRender2Tex& samp
   std::vector<size_t> strides = {sizeof(float)*sampler.nResX,sizeof(float)};
   std::vector<size_t> shape = {(size_t)sampler.nResY,(size_t)sampler.nResX};
   unsigned int ndim = 2;
-  return py::array(py::buffer_info(sampler.aZ.data(), sizeof(float),
-                                   py::format_descriptor<float>::format(),
-                                   ndim, shape, strides));
+  return py::array(py::buffer_info(
+      sampler.aZ.data(), sizeof(float),
+      py::format_descriptor<float>::format(),
+      ndim, shape, strides));
 }
 
 py::array_t<unsigned char> render2tex_color_buffer_4byte(dfm2::opengl::CRender2Tex& sampler)
@@ -30,15 +31,15 @@ py::array_t<unsigned char> render2tex_color_buffer_4byte(dfm2::opengl::CRender2T
       sizeof(unsigned char)*sampler.nResX*4,
       sizeof(unsigned char)*4,sizeof(unsigned char)};
   std::vector<size_t> shape = {
-      (size_t)sampler.nResY,
-      (size_t)sampler.nResX,4};
+      static_cast<size_t>(sampler.nResY),
+      static_cast<size_t>(sampler.nResX),4};
   unsigned int ndim = 3;
   return py::array(py::buffer_info(
       sampler.aRGBA_8ui.data(), sizeof(unsigned char),
       py::format_descriptor<unsigned char>::format(),
       ndim, shape, strides));
 }
-
+*/
 /*
 py::array_t<float> color_buffer_4float(dfm2::opengl::CRender2Tex_DrawOldGL& sampler)
 {
@@ -80,7 +81,8 @@ void init_opengl_r2t(py::module &m)
        &dfm2::opengl::CRender2Tex::InitGL)
   .def("minmax_xyz",
        &dfm2::opengl::CRender2Tex::AABBVec3)
-  .def("set_texture_property",  &dfm2::opengl::CRender2Tex::SetTextureProperty,
+  .def("set_texture_property",
+       &dfm2::opengl::CRender2Tex::SetTextureProperty,
        py::arg("size_res_width"),
        py::arg("size_res_height"),
        py::arg("is_rgba_8ui") )
@@ -89,11 +91,16 @@ void init_opengl_r2t(py::module &m)
   .def("end",
        &dfm2::opengl::CRender2Tex::End)
   .def("set_zero_to_depth",
-       &dfm2::opengl::CRender2Tex::SetZeroToDepth);
-    
+       &dfm2::opengl::CRender2Tex::SetZeroToDepth)
+  .def("get_matrix_model_view",
+      &dfm2::opengl::CRender2Tex::GetMatrixModelViewAsStlVector<double>)
+  .def("get_matrix_projection",
+      &dfm2::opengl::CRender2Tex::GetMatrixProjectionAsStlVector<double>);
+/*
   m.def("render2tex_depth_buffer_numpy",
         &render2tex_depth_buffer_numpy, "");
   m.def("render2tex_color_buffer_4byte",
         &render2tex_color_buffer_4byte, "");
+        */
 //  m.def("color_buffer_4float", &color_buffer_4float);
 }
