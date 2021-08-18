@@ -29,6 +29,4 @@ class AxisXYZ():
         gl.glTranslated(-self.pos[0],-self.pos[1],-self.pos[2])
 
     def minmax_xyz(self):
-        return numpy.array(
-            [[0,0,0],
-             [self.size,self.size,self.size]])
+        return [0,0,0,self.size,self.size,self.size]

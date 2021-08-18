@@ -37,7 +37,7 @@ class DrawerMesh:
         else:
             z_min = 0.0
             z_max = 0.0
-        return numpy.array([[x_min, y_min, z_min], [x_max, y_max, z_max]])
+        return [x_min, y_min, z_min, x_max, y_max, z_max]
 
     def draw(self):
         if self.is_draw_face:

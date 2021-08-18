@@ -9,10 +9,10 @@ namespace py = pybind11;
 namespace dfm2 = delfem2;
 
 // -----------------
-/*
-py::array_t<float> render2tex_depth_buffer_numpy(dfm2::opengl::CRender2Tex& sampler)
+
+py::array_t<float> render2tex_depth_buffer(
+    dfm2::opengl::CRender2Tex& sampler)
 {
-  sampler.CopyToCPU_Depth();
   assert(sampler.aZ.size()==sampler.nResY*sampler.nResX);
   std::vector<size_t> strides = {sizeof(float)*sampler.nResX,sizeof(float)};
   std::vector<size_t> shape = {(size_t)sampler.nResY,(size_t)sampler.nResX};
@@ -23,9 +23,9 @@ py::array_t<float> render2tex_depth_buffer_numpy(dfm2::opengl::CRender2Tex& samp
       ndim, shape, strides));
 }
 
-py::array_t<unsigned char> render2tex_color_buffer_4byte(dfm2::opengl::CRender2Tex& sampler)
+py::array_t<unsigned char> render2tex_color_buffer_4byte(
+    dfm2::opengl::CRender2Tex& sampler)
 {
-  sampler.CopyToCPU_RGBA8UI();
   assert(sampler.aRGBA_8ui.size()==sampler.nResY*sampler.nResX*4);
   std::vector<size_t> strides = {
       sizeof(unsigned char)*sampler.nResX*4,
@@ -39,7 +39,7 @@ py::array_t<unsigned char> render2tex_color_buffer_4byte(dfm2::opengl::CRender2T
       py::format_descriptor<unsigned char>::format(),
       ndim, shape, strides));
 }
-*/
+
 /*
 py::array_t<float> color_buffer_4float(dfm2::opengl::CRender2Tex_DrawOldGL& sampler)
 {
@@ -96,11 +96,11 @@ void init_opengl_r2t(py::module &m)
       &dfm2::opengl::CRender2Tex::GetMatrixModelViewAsStlVector<double>)
   .def("get_matrix_projection",
       &dfm2::opengl::CRender2Tex::GetMatrixProjectionAsStlVector<double>);
-/*
-  m.def("render2tex_depth_buffer_numpy",
-        &render2tex_depth_buffer_numpy, "");
-  m.def("render2tex_color_buffer_4byte",
+
+  m.def("_render2tex_depth_buffer",
+        &render2tex_depth_buffer, "");
+  m.def("_render2tex_color_buffer_4byte",
         &render2tex_color_buffer_4byte, "");
-        */
+
 //  m.def("color_buffer_4float", &color_buffer_4float);
 }

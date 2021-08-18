@@ -6,14 +6,12 @@
 ####################################################################
 
 import os
-import numpy
 import OpenGL.GL as gl
 
 import delfem2 as dfm2
 import delfem2.drawer_mesh
-import delfem2.show_3d
+import delfem2.plot3
 from delfem2.framebuffer_glfw import FrameBufferGLFW
-
 
 def main():
     V, F = dfm2.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
@@ -47,10 +45,12 @@ def main():
         drawer_mesh.draw()
         sampler.end()
 
+    np_depth = sampler.get_depth()
+    np_rgb = sampler.get_color_4byte()
+
     drawer_r2t = delfem2.DrawerRender2Tex(sampler)
     drawer_r2t.drawer.color_point = [1, 0, 0, 1]
-    dfm2.show_3d.show_3d([drawer_mesh, drawer_r2t])
-
+    dfm2.plot3.plot3([drawer_mesh, drawer_r2t])
 
 if __name__ == "__main__":
     main()

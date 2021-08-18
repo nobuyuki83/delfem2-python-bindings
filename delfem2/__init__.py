@@ -3,6 +3,8 @@ import numpy as np
 
 from .delfem2 import *
 
+
+
 class DrawerRender2Tex:
     def __init__(self, r2t):
         self.r2t = r2t
@@ -31,6 +33,16 @@ class DrawerRender2Tex:
             [+1,+1,+1,+1]], dtype=np.float32).transpose()
         corner = corner[:-1,:]  # change homogenous coordinate to xyz coordinate
 
-        return np.array([
-            [corner[0].min(),corner[1].min(),corner[2].min()],
-            [corner[0].max(),corner[1].max(),corner[2].max()]])
+        return [corner[0].min(),corner[1].min(),corner[2].min(),
+                corner[0].max(),corner[1].max(),corner[2].max()]
+
+
+def _r2t_get_depth(self):
+    return delfem2._render2tex_depth_buffer(self)
+
+setattr(delfem2.Render2Tex,"get_depth",_r2t_get_depth)
+
+def _r2t_get_color_4byte(self):
+    return delfem2._render2tex_color_buffer_4byte(self)
+
+setattr(delfem2.Render2Tex,"get_color_4byte",_r2t_get_color_4byte)

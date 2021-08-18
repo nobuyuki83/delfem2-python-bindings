@@ -3,32 +3,34 @@ import OpenGL.GL as gl
 from delfem2.window_glfw import WindowGLFW
 from .delfem2 import glad_load_gl, setup_glsl
 
+
 def _add_aabb3(
-        lhs: numpy.ndarray,
-        rhs: numpy.ndarray) -> numpy.ndarray:
+        lhs: list,
+        rhs: list) -> list:
     """
     internal function to compute the axis-aligned bounding box (AABB) of two AABBs
     :param lhs: AABB
     :param rhs: AABB
     :return: AABB that include lhs and rhs
     """
-    assert lhs.shape == rhs.shape == (2, 3)
-    if lhs[0, 0] > lhs[1, 0]:
+    assert len(lhs) == len(rhs) == 6
+    if lhs[0] > lhs[1]:
         return rhs
-    if rhs[0, 0] > rhs[1, 0]:
+    if rhs[0] > rhs[1]:
         return lhs
-    np_cat = numpy.dstack([lhs, rhs])
-    return numpy.array([np_cat.min(axis=2)[0], np_cat.max(axis=2)[1]])
+    np_cat = numpy.array([lhs, rhs]).transpose()
+    return [np_cat[0].min(), np_cat[1].min(), np_cat[2].min(),
+            np_cat[3].max(), np_cat[4].max(), np_cat[5].max()]
 
 
 def plot3(list_obj: list,
           winsize=(400, 300),
-           bgcolor=(1, 1, 1),
-           glsl_vrt="",
-           glsl_frg="",
-           camera_rotation=(0.0, 0.0, 0.0),
-           camera_scale=1.0,
-           nframe=-1):
+          bgcolor=(1, 1, 1),
+          glsl_vrt="",
+          glsl_frg="",
+          camera_rotation=(0.0, 0.0, 0.0),
+          camera_scale=1.0,
+          nframe=-1):
     """
     draw the input object into openGL window
 
@@ -64,12 +66,12 @@ def plot3(list_obj: list,
         glad_load_gl()
         id_shader_program = setup_glsl(glsl_vrt, glsl_frg)
     #### adjust scale
-    aabb3 = numpy.array([[+1., +1., +1.], [-1., -1, -1.]])
+    aabb3 = [+1., 0., 0., -1., 0., 0.]
     for obj in list_obj:
         if hasattr(obj, 'minmax_xyz'):
             aabb3 = _add_aabb3(aabb3, obj.minmax_xyz())
-    if aabb3[0, 0] > aabb3[1, 0]:
-        aabb3 = numpy.array([[-1., -1., -1.], [+1., +1., +1.]])
+    if aabb3[0] > aabb3[3]:
+        aabb3 = [-1., -1., -1., +1., +1., +1.]
     window.camera.adjust_scale_trans(aabb3)
     window.camera.scale = camera_scale
     ## set camera rotation
