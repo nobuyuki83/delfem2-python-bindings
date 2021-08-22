@@ -13,9 +13,9 @@ namespace dfm2 = delfem2;
 py::array_t<float> render2tex_depth_buffer(
     dfm2::opengl::CRender2Tex& sampler)
 {
-  assert(sampler.aZ.size()==sampler.nResY*sampler.nResX);
-  std::vector<size_t> strides = {sizeof(float)*sampler.nResX,sizeof(float)};
-  std::vector<size_t> shape = {(size_t)sampler.nResY,(size_t)sampler.nResX};
+  assert(sampler.aZ.size()==sampler.height*sampler.width);
+  std::vector<size_t> strides = {sizeof(float)*sampler.width, sizeof(float)};
+  std::vector<size_t> shape = {(size_t)sampler.height, (size_t)sampler.width};
   unsigned int ndim = 2;
   return py::array(py::buffer_info(
       sampler.aZ.data(), sizeof(float),
@@ -26,13 +26,13 @@ py::array_t<float> render2tex_depth_buffer(
 py::array_t<unsigned char> render2tex_color_buffer_4byte(
     dfm2::opengl::CRender2Tex& sampler)
 {
-  assert(sampler.aRGBA_8ui.size()==sampler.nResY*sampler.nResX*4);
+  assert(sampler.aRGBA_8ui.size()==sampler.height*sampler.width*4);
   std::vector<size_t> strides = {
-      sizeof(unsigned char)*sampler.nResX*4,
+      sizeof(unsigned char)*sampler.width*4,
       sizeof(unsigned char)*4,sizeof(unsigned char)};
   std::vector<size_t> shape = {
-      static_cast<size_t>(sampler.nResY),
-      static_cast<size_t>(sampler.nResX),4};
+      static_cast<size_t>(sampler.height),
+      static_cast<size_t>(sampler.width), 4};
   unsigned int ndim = 3;
   return py::array(py::buffer_info(
       sampler.aRGBA_8ui.data(), sizeof(unsigned char),
@@ -74,13 +74,11 @@ void init_opengl_r2t(py::module &m)
   // Depth&Color Sampler
   py::class_<dfm2::opengl::CRender2Tex>(
       m,
-      "Render2Tex",
+      "_Render2Tex",
       "sample color and depth in the frame buffer")
   .def(py::init<>())
   .def("init_gl",
        &dfm2::opengl::CRender2Tex::InitGL)
-  .def("minmax_xyz",
-       &dfm2::opengl::CRender2Tex::AABBVec3)
   .def("set_texture_property",
        &dfm2::opengl::CRender2Tex::SetTextureProperty,
        py::arg("size_res_width"),
@@ -92,10 +90,14 @@ void init_opengl_r2t(py::module &m)
        &dfm2::opengl::CRender2Tex::End)
   .def("set_zero_to_depth",
        &dfm2::opengl::CRender2Tex::SetZeroToDepth)
-  .def("get_matrix_model_view",
-      &dfm2::opengl::CRender2Tex::GetMatrixModelViewAsStlVector<double>)
-  .def("get_matrix_projection",
-      &dfm2::opengl::CRender2Tex::GetMatrixProjectionAsStlVector<double>);
+  .def("get_affinematrix_modelview_colmajor",
+       &dfm2::opengl::CRender2Tex::GetAffineMatrixModelViewAsColMajorStlVector<double>)
+  .def("get_affinematrix_projection_colmajor",
+      &dfm2::opengl::CRender2Tex::GetAffineMatrixProjectionAsColMajorStlVector<double>)
+  .def("set_affinematrix_modelview_colmajor",
+       &dfm2::opengl::CRender2Tex::SetAffineMatrixModelViewAsColMajorStlVector<double>)
+  .def("set_affinematrix_projection_colmajor",
+       &dfm2::opengl::CRender2Tex::SetAffineMatrixProjectionAsColMajorStlVector<double>);
 
   m.def("_render2tex_depth_buffer",
         &render2tex_depth_buffer, "");

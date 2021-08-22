@@ -47,7 +47,7 @@ class WindowGLFW:
         #    self.close()
         pass
 
-    def draw_loop(self, nframe=-1):
+    def draw_loop(self, duration=-1):
         """
         Enter the draw loop
 
@@ -59,6 +59,7 @@ class WindowGLFW:
         glfw.set_scroll_callback(self.win, self.scroll)
         #    glfw.set_window_size_callback(self.win, self.window_size)
         iframe = 0
+        time_start = glfw.get_time()
         while not glfw.window_should_close(self.win):
             gl.glClearColor(self.color_bg[0], self.color_bg[1], self.color_bg[2], 1.0)
             gl.glClear(gl.GL_COLOR_BUFFER_BIT | gl.GL_DEPTH_BUFFER_BIT)
@@ -72,7 +73,7 @@ class WindowGLFW:
             glfw.swap_buffers(self.win)
             glfw.poll_events()
             iframe += 1
-            if nframe > 0 and iframe > nframe:
+            if duration > 0 and glfw.get_time() > time_start + duration:
                 break
             if self.nav.isClose:
                 break
@@ -84,8 +85,8 @@ class WindowGLFW:
 
     def mouse(self, win0, btn, action, mods):
         self.nav.mouse(win0, btn, action, mods)
-        mMV = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
-        mPj = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
+        np44_affrans_modelview = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
+        np44_afftrans_projection = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
         '''
         src = screenUnProjection(numpy.array([float(self.wm.mouse_x),float(self.wm.mouse_y),0.0]),
                                  mMV, mPj)
@@ -98,8 +99,8 @@ class WindowGLFW:
         if self.nav.button == -1:
             return
         self.nav.motion(win0, x, y, self.camera)
-        mMV = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
-        mPj = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
+        np44_afftrans_modelview = gl.glGetFloatv(gl.GL_MODELVIEW_MATRIX)
+        np44_afftrans_projection = gl.glGetFloatv(gl.GL_PROJECTION_MATRIX)
         '''
         src0 = screenUnProjection(numpy.array([float(self.wm.mouse_pre_x),float(self.wm.mouse_pre_y),0.0]),
                                  mMV, mPj)

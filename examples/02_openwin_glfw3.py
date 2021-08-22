@@ -6,13 +6,16 @@
 ####################################################################
 
 import os
+import numpy
 import delfem2 as dfm2
+import delfem2.mesh
 import delfem2.plot3
 import delfem2.drawer_axisxyz
 import delfem2.drawer_mesh
 
-V, F = dfm2.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
-V *= 0.03
+V, F = dfm2.mesh.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
+V -= numpy.average(V,axis=0)
+V /= V.max() - V.min()
 
 axis_xyz = delfem2.drawer_axisxyz.AxisXYZ()
 drawer = delfem2.drawer_mesh.DrawerMesh(V,F)

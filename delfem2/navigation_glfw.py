@@ -18,7 +18,7 @@ class NavigationGLFW:
         self.isClose = False
 
     def keyinput(self, win_glfw, key, scancode, action, mods, camera) -> None:
-        if key == glfw.KEY_Q and action == glfw.PRESS:
+        if key == glfw.KEY_ESCAPE and action == glfw.PRESS:
             self.isClose = True
         if key == glfw.KEY_PAGE_UP:
             camera.scale *= 1.03

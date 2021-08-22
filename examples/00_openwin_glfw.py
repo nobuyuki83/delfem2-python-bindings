@@ -7,9 +7,9 @@
 
 import OpenGL.GL as gl
 import glfw
-import numpy as np
 
 import delfem2 as dfm2
+import delfem2.mesh
 from delfem2.navigation_glfw import NavigationGLFW
 from delfem2.camera import Camera
 import os
@@ -33,7 +33,7 @@ def keyfunc_callback(win_glfw, key, scancode, action, mods):
 def main():
     global nav
 
-    V, F = dfm2.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
+    V, F = dfm2.mesh.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
     V *= 0.02
     print(V.shape, F.shape)
 
@@ -56,7 +56,7 @@ def main():
         camera.set_gl_camera()
         gl.glColor3d(0, 0, 0)
         gl.glDisable(gl.GL_LIGHTING)
-        dfm2.draw_meshtri3_edge(V, F)
+        dfm2.mesh.draw_meshtri3_edge(V, F)
         glfw.swap_buffers(win_glfw)
         glfw.poll_events()
         if nav.isClose:

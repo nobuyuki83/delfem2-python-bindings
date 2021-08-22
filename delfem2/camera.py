@@ -8,11 +8,9 @@
 import math, numpy
 import quaternion
 import OpenGL.GL as gl
-
 from enum import Enum
 
-
-def motion_rot(
+def _motion_rot(
         scrnx1, scrny1,
         scrnx0, scrny0,
         quat, trans):
@@ -24,26 +22,26 @@ def motion_rot(
     if a > 1.0e-3:
         dq = numpy.quaternion(
             math.cos(a * 0.5),
-            +dy * math.sin(a * 0.5) / a,
-            -dx * math.sin(a * 0.5) / a,
+            -dy * math.sin(a * 0.5) / a,
+            +dx * math.sin(a * 0.5) / a,
             0.0)
     else:
         dq = numpy.quaternion(1, -dy, dx, 0.0)
     if a != 0.0:
-        quat = quat * dq
+        quat = dq * quat
     return quat, trans
 
 
-def motion_trans(scrnx1, scrny1,
-                 scrnx0, scrny0,
-                 quat, trans, view_height,
-                 scale: float):
+def _motion_trans(scrnx1, scrny1,
+                  scrnx0, scrny0,
+                  quat, trans, view_height,
+                  scale: float):
     assert len(trans) == 2
     assert isinstance(quat, numpy.quaternion)
     dx = scrnx1 - scrnx0
     dy = scrny1 - scrny0
-    trans[0] += dx * view_height * 0.5 / scale
-    trans[1] += dy * view_height * 0.5 / scale
+    trans[0] += dx * view_height / scale
+    trans[1] += dy * view_height / scale
     return quat, trans
 
 
@@ -84,10 +82,15 @@ class Camera:
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glLoadIdentity()
         gl.glTranslated(self.scr_trans[0], self.scr_trans[1], -depth)
-        gl.glMultMatrixf(self.affine_matrix())
+        gl.glMultMatrixf(self.affine_matrix_modelview().transpose())
         gl.glTranslated(self.pivot[0], self.pivot[1], self.pivot[2])
 
-    def affine_matrix(self) -> numpy.ndarray:
+    def affine_matrix_modelview(self) -> numpy.ndarray:
+        '''
+        compute modelview matrix (not transposed)
+        :return: 4x4 numpy array
+        '''
+        mMV = numpy.eye(4, dtype=numpy.float64)
         if self.camera_rot_mode == CAMERA_ROT_MODE.TBALL:
             mR3 = quaternion.as_rotation_matrix(self.quat)
             mMV = numpy.zeros([4, 4], dtype=numpy.float64)
@@ -111,7 +114,7 @@ class Camera:
 
     def rotation(self, sx1, sy1, sx0, sy0):
         if self.camera_rot_mode == CAMERA_ROT_MODE.TBALL:
-            self.quat, self.trans = motion_rot(
+            self.quat, self.trans = _motion_rot(
                 sx1, sy1, sx0, sy0,
                 self.quat, self.scr_trans)
         elif self.camera_rot_mode == CAMERA_ROT_MODE.YTOP:
@@ -121,7 +124,7 @@ class Camera:
         return
 
     def translation(self, sx1, sy1, sx0, sy0):
-        self.quat, self.trans = motion_trans(
+        self.quat, self.trans = _motion_trans(
             sx1, sy1, sx0, sy0, self.quat,
             self.scr_trans, self.view_height,
             self.scale)

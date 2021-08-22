@@ -2,11 +2,9 @@
 from typing import List
 from delfem2.window_glfw import WindowGLFW
 
-class FrameBufferGLFW:
+class InVisibleWindowGLFW:
     def __init__(self,
-                 win_size: List[int],
-                 format_color: str,
-                 is_depth: bool):
+                 win_size: List[int]):
         self.win = WindowGLFW(
             winsize=win_size,
             isVisible=False)

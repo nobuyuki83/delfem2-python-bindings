@@ -1,8 +1,7 @@
 import numpy
 import OpenGL.GL as gl
 from delfem2.window_glfw import WindowGLFW
-from .delfem2 import glad_load_gl, setup_glsl
-
+from delfem2 import glad_load_gl
 
 def _add_aabb3(
         lhs: list,
@@ -30,7 +29,7 @@ def plot3(list_obj: list,
           glsl_frg="",
           camera_rotation=(0.0, 0.0, 0.0),
           camera_scale=1.0,
-          nframe=-1):
+          duration=-1):
     """
     draw the input object into openGL window
 
@@ -60,11 +59,6 @@ def plot3(list_obj: list,
             window.list_func_step_time.append(obj.step_time)
         if hasattr(obj, "key"):
             window.list_func_key.append(obj.key)
-    #### glsl compile
-    id_shader_program = 0
-    if glsl_vrt != "" and glsl_frg != "":
-        glad_load_gl()
-        id_shader_program = setup_glsl(glsl_vrt, glsl_frg)
     #### adjust scale
     aabb3 = [+1., 0., 0., -1., 0., 0.]
     for obj in list_obj:
@@ -80,6 +74,5 @@ def plot3(list_obj: list,
     ## initalizing opengl
     gl.glEnable(gl.GL_POLYGON_OFFSET_FILL)
     gl.glPolygonOffset(1.1, 4.0)
-    gl.glUseProgram(id_shader_program)
     ## enter loop
-    window.draw_loop(nframe=nframe)
+    window.draw_loop(duration=duration)
