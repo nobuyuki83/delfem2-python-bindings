@@ -38,5 +38,4 @@ cmake-build-release
 .idea
 __pycache__
 *.cbp
-*.so
 private
