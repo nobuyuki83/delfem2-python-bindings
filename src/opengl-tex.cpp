@@ -38,9 +38,9 @@ void init_opengl_texture(py::module &m) {
       .def("set_minmax_xy",
            &dfm2::opengl::CTexRGB_Rect2D::SetMinMaxXY)
       .def_readonly("width",
-                    &dfm2::opengl::CTexRGB_Rect2D::width_)
+                    &dfm2::opengl::CTexRGB_Rect2D::width)
       .def_readonly("height",
-                    &dfm2::opengl::CTexRGB_Rect2D::height_);
+                    &dfm2::opengl::CTexRGB_Rect2D::height);
 
   m.def("get_texture",
         &GetTextureFromNumpy);
