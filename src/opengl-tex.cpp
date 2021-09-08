@@ -15,14 +15,14 @@ namespace dfm2 = delfem2;
 
 dfm2::opengl::CTexRGB_Rect2D
 GetTextureFromNumpy(
-    const py::array_t<unsigned char>& a,
-    const std::string& str_channels)
+    const py::array_t<unsigned char>& a)
 {
-  assert(a.ndim()==3 && a.shape()[2] == 3);
+  assert(a.ndim()==3);
   const size_t h = a.shape()[0];
   const size_t w = a.shape()[1];
+  const size_t c = a.shape()[2];
   dfm2::opengl::CTexRGB_Rect2D tex;
-  tex.Initialize(w,h,a.data(),str_channels);
+  tex.Initialize(w,h,c,a.data());
   return tex;
 }
 
