@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -g")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g")
 endif()
 
 project(delfem2)
@@ -16,22 +16,34 @@ project(delfem2)
 ##########################################################
 # dependencies setting
 
-# pybind11
-set(PYBIND11_DIR "${PROJECT_SOURCE_DIR}/external/pybind11")
-add_subdirectory(${PYBIND11_DIR} pybind11)
+# eigen
+FIND_PACKAGE(Eigen3 REQUIRED)
+get_target_property(EIGEN_INCLUDE_DIR Eigen3::Eigen INTERFACE_INCLUDE_DIRECTORIES)
+message(STATUS "eigen include dir: ${EIGEN_INCLUDE_DIR}")
 
-# glfw
-# set(GLFW_ROOT "${PROJECT_SOURCE_DIR}/external/libglfw")
-# include(${CMAKE_CURRENT_SOURCE_DIR}/external/FindGLFW.cmake)
+# pybind11
+If(EXISTS ${PROJECT_SOURCE_DIR}/external/pybind11/CMakeLists.txt)
+  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/external/pybind11)
+ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../pybind11/CMakeLists.txt)
+  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/../pybind11)
+ENDIF()
+message(STATUS "pybind11 dir: ${PYBIND11_DIR}")
+
+# delfem2
+If(EXISTS ${PROJECT_SOURCE_DIR}/external/delfem2/include)
+  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/external/delfem2)
+ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../delfem2/include)
+  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/../delfem2)
+ENDIF()
+message(STATUS "delfem2 dir: ${DELFEM2_DIR}")
 
 ##########################################################
 # build setting
 
 include_directories(
-    ${PROJECT_SOURCE_DIR}/external/delfem2/include
-    ${PROJECT_SOURCE_DIR}/external/eigen
+    ${DELFEM2_DIR}/include
+    ${EIGEN_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/external/glad3/include
-#    ${GLFW_INCLUDE_DIR}
 )
 
 file(GLOB SRC_FILES
@@ -43,11 +55,9 @@ set(INPUT_SRC
 
 message(STATUS "src paths: ${SRC_FILES}")
 
+add_subdirectory(${PYBIND11_DIR} build)
 pybind11_add_module(${PROJECT_NAME}
     ${INPUT_SRC} )
-
-#target_link_libraries(${PROJECT_NAME} PRIVATE
-#    ${GLFW_LIBRARIES})
 
 # build & link
 ###########################################
