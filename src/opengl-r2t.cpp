@@ -16,11 +16,13 @@ py::array_t<float> render2tex_depth_buffer(
   assert(sampler.aZ.size()==sampler.height*sampler.width);
   std::vector<size_t> strides = {sizeof(float)*sampler.width, sizeof(float)};
   std::vector<size_t> shape = {(size_t)sampler.height, (size_t)sampler.width};
-  unsigned int ndim = 2;
+  // this will copy the content of the array
+  // TODO: expose as view
+  //  https://stackoverflow.com/questions/49181258/pybind11-create-numpy-view-of-data
   return py::array(py::buffer_info(
       sampler.aZ.data(), sizeof(float),
       py::format_descriptor<float>::format(),
-      ndim, shape, strides));
+      2, shape, strides));
 }
 
 py::array_t<unsigned char> render2tex_color_buffer_4byte(
@@ -33,11 +35,13 @@ py::array_t<unsigned char> render2tex_color_buffer_4byte(
   std::vector<size_t> shape = {
       static_cast<size_t>(sampler.height),
       static_cast<size_t>(sampler.width), 4};
-  unsigned int ndim = 3;
+  // this will copy the content of the array
+  // TODO: expose as view
+  //  https://stackoverflow.com/questions/49181258/pybind11-create-numpy-view-of-data
   return py::array(py::buffer_info(
       sampler.aRGBA_8ui.data(), sizeof(unsigned char),
       py::format_descriptor<unsigned char>::format(),
-      ndim, shape, strides));
+      3, shape, strides));
 }
 
 /*

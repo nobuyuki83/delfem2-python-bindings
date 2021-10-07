@@ -40,8 +40,13 @@ jobs:
           git submodule update --init external/pybind11          
 
           git submodule update --init external/eigen
+          cd external/eigen
+          mkdir build
+          cd build
+          cmake ..
+          cmake --install . --prefix ../../eigenlib
 
-          # sudo apt-get install build-essential cmake          
+          # sudo apt-get install build-essential cmake
           
           sudo apt-get install libgl-dev
 

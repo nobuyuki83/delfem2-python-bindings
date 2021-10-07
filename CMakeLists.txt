@@ -17,6 +17,7 @@ project(delfem2)
 # dependencies setting
 
 # eigen
+set(Eigen3_DIR ${PROJECT_SOURCE_DIR}/external/eigenlib)
 FIND_PACKAGE(Eigen3 REQUIRED)
 get_target_property(EIGEN_INCLUDE_DIR Eigen3::Eigen INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "eigen include dir: ${EIGEN_INCLUDE_DIR}")
