@@ -13,14 +13,14 @@ namespace dfm2 = delfem2;
 py::array_t<float> render2tex_depth_buffer(
     dfm2::opengl::CRender2Tex& sampler)
 {
-  assert(sampler.aZ.size()==sampler.height*sampler.width);
+  assert(sampler.aDepth.size()==sampler.height*sampler.width);
   std::vector<size_t> strides = {sizeof(float)*sampler.width, sizeof(float)};
   std::vector<size_t> shape = {(size_t)sampler.height, (size_t)sampler.width};
   // this will copy the content of the array
   // TODO: expose as view
   //  https://stackoverflow.com/questions/49181258/pybind11-create-numpy-view-of-data
   return py::array(py::buffer_info(
-      sampler.aZ.data(), sizeof(float),
+      sampler.aDepth.data(), sizeof(float),
       py::format_descriptor<float>::format(),
       2, shape, strides));
 }
@@ -94,14 +94,14 @@ void init_opengl_r2t(py::module &m)
        &dfm2::opengl::CRender2Tex::End)
   .def("set_zero_to_depth",
        &dfm2::opengl::CRender2Tex::SetZeroToDepth)
-  .def("get_affinematrix_modelview_colmajor",
-       &dfm2::opengl::CRender2Tex::GetAffineMatrixModelViewAsColMajorStlVector<double>)
-  .def("get_affinematrix_projection_colmajor",
-      &dfm2::opengl::CRender2Tex::GetAffineMatrixProjectionAsColMajorStlVector<double>)
-  .def("set_affinematrix_modelview_colmajor",
-       &dfm2::opengl::CRender2Tex::SetAffineMatrixModelViewAsColMajorStlVector<double>)
-  .def("set_affinematrix_projection_colmajor",
-       &dfm2::opengl::CRender2Tex::SetAffineMatrixProjectionAsColMajorStlVector<double>);
+  .def("get_affinematrix_modelview",
+       &dfm2::opengl::CRender2Tex::GetAffineMatrixModelViewStlVector<double>)
+  .def("get_affinematrix_projection",
+      &dfm2::opengl::CRender2Tex::GetAffineMatrixProjectionStlVector<double>)
+  .def("set_affinematrix_modelview",
+       &dfm2::opengl::CRender2Tex::SetAffineMatrixModelViewStlVector<double>)
+  .def("set_affinematrix_projection",
+       &dfm2::opengl::CRender2Tex::SetAffineMatrixProjectionStlVector<double>);
 
   m.def("_render2tex_depth_buffer",
         &render2tex_depth_buffer, "");

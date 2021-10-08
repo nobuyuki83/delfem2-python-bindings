@@ -44,11 +44,11 @@ class Render2Tex:
         self._r2t = _Render2Tex()
         self._r2t.set_texture_property(size_res_width=width, size_res_height=height, is_rgba_8ui=is_rgba_8ui)
         if isinstance(affinematrix_modelview,np.ndarray):
-            mvt = list(affinematrix_modelview.copy().transpose().reshape([16]))
-            self._r2t.set_affinematrix_modelview_colmajor(mvt)
+            mvt = list(affinematrix_modelview.copy().reshape([16]))
+            self._r2t.set_affinematrix_modelview(mvt)
         if isinstance(affinematrix_projection,np.ndarray):
-            mp = list(affinematrix_projection.copy().transpose().reshape([16]))
-            self._r2t.set_affinematrix_projection_colmajor(mp)
+            mp = list(affinematrix_projection.copy().reshape([16]))
+            self._r2t.set_affinematrix_projection(mp)
 
 
     def init_gl(self):
@@ -61,10 +61,10 @@ class Render2Tex:
         self._r2t.end()
 
     def affinematrix_projection(self):
-        return np.array(self._r2t.get_affinematrix_projection_colmajor()).reshape(4,4).transpose()
+        return np.array(self._r2t.get_affinematrix_projection()).reshape(4,4)
 
     def affinematrix_modelview(self):
-        return np.array(self._r2t.get_affinematrix_modelview_colmajor()).reshape(4,4).transpose()
+        return np.array(self._r2t.get_affinematrix_modelview()).reshape(4,4)
 
     def get_depth(self):
         return _render2tex_depth_buffer(self._r2t)
@@ -75,7 +75,9 @@ class Render2Tex:
     def set_modelviewprojection_matrix_legacy_opengl(self):
         gl.glMatrixMode(gl.GL_PROJECTION)
         gl.glLoadIdentity()
-        gl.glMultMatrixd(self._r2t.get_affinematrix_projection_colmajor())
+        mp = np.diag([1.,1.,-1.,1.]) @ self.affinematrix_projection()
+        gl.glMultMatrixd( mp.transpose() )
+        #
         gl.glMatrixMode(gl.GL_MODELVIEW)
         gl.glLoadIdentity()
-        gl.glMultMatrixd(self._r2t.get_affinematrix_modelview_colmajor())
+        gl.glMultMatrixd( self.affinematrix_modelview().transpose() )

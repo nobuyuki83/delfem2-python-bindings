@@ -35,7 +35,7 @@ def show_default(drawer, r2t):
     drawer_r2t = delfem2.render_to_texture.DrawerRender2Tex(r2t)
     drawer_r2t.drawer.color_point = [1, 0, 0, 1]
     dfm2.plot3.plot3(
-        [drawer, drawer_r2t], duration=3,
+        [drawer, drawer_r2t], duration=-1,
         camera_rotation=(math.pi * 0.1, math.pi * 0.4, math.pi * 0.0))
 
 
@@ -60,7 +60,7 @@ def affinematrix_projection_orthogonal(num_res_x, num_res_y, len_pix, z_range):
     return np.array([
         [2.0 / (r - l), 0, 0, -(l + r) / (r - l)],
         [0, 2.0 / (t - b), 0, -(t + b) / (t - b)],
-        [0, 0, 2.0 / (n - f), -(n + f) / (n - f)],
+        [0, 0, 2.0 / (f - n), -(n + f) / (f - n)],
         [0, 0, 0, 1]])
 
 

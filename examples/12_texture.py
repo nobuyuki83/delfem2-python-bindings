@@ -16,7 +16,7 @@ def main():
   pil_image_lenna = Image.open("asset/lenna.png")
   np_img = np.array(pil_image_lenna)
   axis = AxisXYZ(100)
-  tex = dfm2.get_texture(np_img,"rgb")
+  tex = dfm2.get_texture(np_img)
   plot3([axis,tex],winsize=(400,300),
           camera_rotation=[math.pi, 0, 0])
 
