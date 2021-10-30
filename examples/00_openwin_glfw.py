@@ -7,16 +7,15 @@
 
 import OpenGL.GL as gl
 import glfw
-
+import os, sys
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import delfem2.mesh
 from delfem2.navigation_glfw import NavigationGLFW
 from delfem2.camera import Camera
-import os
 
 camera = Camera()
 nav = NavigationGLFW(1.0)
-
 
 def mouse_button_callback(win_glfw, btn, action, mods):
     nav.mouse(win_glfw, btn, action, mods)
@@ -33,7 +32,8 @@ def keyfunc_callback(win_glfw, key, scancode, action, mods):
 def main():
     global nav
 
-    V, F = dfm2.mesh.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
+    V, F = dfm2.mesh.read_triangle_mesh(
+        os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
     V *= 0.02
     print(V.shape, F.shape)
 

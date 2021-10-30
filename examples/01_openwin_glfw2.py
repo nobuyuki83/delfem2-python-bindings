@@ -5,12 +5,13 @@
 # LICENSE file in the root directory of this source tree.          #
 ####################################################################
 
+import os, sys
 import OpenGL.GL as gl
 import numpy
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import delfem2.mesh
 import delfem2.window_glfw
-import os
 
 
 def draw_func():
@@ -19,7 +20,8 @@ def draw_func():
     dfm2.mesh.draw_meshtri3_edge(V, F)
 
 
-V, F = dfm2.mesh.read_triangle_mesh(os.path.join(os.getcwd(), "asset", "bunny_1k.obj"))
+V, F = dfm2.mesh.read_triangle_mesh(
+    os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
 V -= numpy.average(V,axis=0)
 V /= V.max() - V.min()
 

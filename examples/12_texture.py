@@ -5,7 +5,9 @@
 # LICENSE file in the root directory of this source tree.          #
 ####################################################################
 
-import sys, math
+import os, sys, math
+
+sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import numpy as np
 from PIL import Image
@@ -13,7 +15,8 @@ from delfem2.drawer_axisxyz import AxisXYZ
 from delfem2.plot3 import plot3
 
 def main():
-  pil_image_lenna = Image.open("asset/lenna.png")
+  pil_image_lenna = Image.open(
+    os.path.join(os.path.dirname(__file__), "asset", "lenna.png"))
   np_img = np.array(pil_image_lenna)
   axis = AxisXYZ(100)
   tex = dfm2.get_texture(np_img)

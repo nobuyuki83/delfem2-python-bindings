@@ -31,7 +31,7 @@
 *.out
 *.app
 
-
+build
 venv
 cmake-build-debug
 cmake-build-release
@@ -40,3 +40,4 @@ __pycache__
 *.cbp
 private
 external/eigenlib
+!examples/asset/bunny_1k.obj
