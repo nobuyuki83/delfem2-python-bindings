@@ -13,26 +13,31 @@ namespace py = pybind11;
 
 void init_msh_io(py::module &);
 void init_msh_elm(py::module &);
+void init_bvh(py::module &m);
+void init_mat3(py::module &m);
+
 void init_opengl_r2t(py::module &);
 void init_opengl_old_mshuni(py::module &);
 void init_opengleigen_funcs(py::module &);
 void init_glad_glfw(py::module &);
 void init_opengl_old_drawer_r2t(py::module &m);
 void init_opengl_texture(py::module &m);
-void init_bvh(py::module &m);
 
 PYBIND11_MODULE(delfem2, m) {
   m.doc() = "my_cpp_module";
 
   init_msh_io(m);
   init_msh_elm(m);
+  init_glad_glfw(m);
+  init_bvh(m);
+  init_mat3(m);
+  //
   init_opengleigen_funcs(m);
   init_opengl_r2t(m);
   init_opengl_texture(m);
   init_opengl_old_mshuni(m);
   init_opengl_old_drawer_r2t(m);
-  init_glad_glfw(m);
-  init_bvh(m);
 }
+
 
 

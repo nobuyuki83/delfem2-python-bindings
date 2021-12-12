@@ -41,3 +41,4 @@ __pycache__
 private
 external/eigenlib
 !examples/asset/bunny_1k.obj
+.DS_Store
