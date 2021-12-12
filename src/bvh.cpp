@@ -99,6 +99,7 @@ void init_bvh(py::module &m) {
     .def(py::init<>())
     .def(py::init<const std::string &>())
     .def("open", &dfm2::BioVisionHierarchy::Open)
+    .def("save", &dfm2::BioVisionHierarchy::Save)
     .def("set_frame", &dfm2::BioVisionHierarchy::SetFrame)
     .def("clear_pose", &dfm2::BioVisionHierarchy::ClearPose)
     .def("minmax_xyz", &dfm2::BioVisionHierarchy::MinMaxXYZ)
