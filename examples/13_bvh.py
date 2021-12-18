@@ -29,5 +29,6 @@ def main():
     bb = bvh.minmax_xyz()
     print("skeleton_size",bb)
 
+
 if __name__ == "__main__":
     main()

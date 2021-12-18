@@ -38,10 +38,20 @@ ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../delfem2/include)
 ENDIF()
 message(STATUS "delfem2 dir: ${DELFEM2_DIR}")
 
+# imath
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/external/Imathlib)
+FIND_PACKAGE(Imath)
+
+# alembic
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/external/alembiclib)
+FIND_PACKAGE(Alembic)
+
 ##########################################################
 # build setting
 
 include_directories(
+PUBLIC
+    Alembic::Alembic
     ${DELFEM2_DIR}/include
     ${EIGEN_INCLUDE_DIR}
     ${PROJECT_SOURCE_DIR}/external/glad3/include
@@ -59,6 +69,11 @@ message(STATUS "src paths: ${SRC_FILES}")
 add_subdirectory(${PYBIND11_DIR} build)
 pybind11_add_module(${PROJECT_NAME}
     ${INPUT_SRC} )
+
+target_link_libraries(${PROJECT_NAME}
+PUBLIC
+    Alembic::Alembic
+    )
 
 # build & link
 ###########################################

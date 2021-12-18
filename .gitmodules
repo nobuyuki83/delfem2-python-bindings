@@ -7,3 +7,9 @@
 [submodule "external/eigen"]
 	path = external/eigen
 	url = https://gitlab.com/libeigen/eigen
+[submodule "external/alembic"]
+	path = external/alembic
+	url = https://github.com/alembic/alembic.git
+[submodule "external/Imath"]
+	path = external/Imath
+	url = https://github.com/AcademySoftwareFoundation/Imath.git
