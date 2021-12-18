@@ -51,6 +51,38 @@ jobs:
           sudo apt-get install libgl-dev
 
 
+      - name: build_examples (alembic)
+        run: |
+          echo ########################################
+          echo ## build examples alembic
+          
+          git submodule update --init -- external/Imath
+          cd external/Imath || exit
+          git checkout master
+          git pull origin master
+          mkdir build
+          cd build || exit
+          cmake .. -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF
+          cmake --build .
+          cmake --install . --prefix ../../Imathlib
+          cd ../../../
+
+          Imath_dir=$(pwd)/external/Imathlib
+          echo "Imath_dir: ${Imath_dir}"
+
+          git submodule update --init -- external/alembic
+          cd external/alembic
+          git checkout master
+          git pull origin master
+          mkdir build
+          cd build || exit
+          # absolute path is required for CMAKE_PREFIX_PATH
+          cmake .. -DUSE_TESTS=OFF -DALEMBIC_SHARED_LIBS=OFF -DCMAKE_PREFIX_PATH=${Imath_dir}
+          cmake --build . 
+          cmake --install . --prefix=../../alembiclib
+          cd ../../../          
+
+
       # Runs a set of commands using the runners shell
       - name: build
         run: |

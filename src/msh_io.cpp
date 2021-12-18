@@ -17,6 +17,9 @@ namespace dfm2 = delfem2;
 // ----------------------------------------------------------
 
 void init_msh_io(py::module &m) {
-  m.def("read_triangle_mesh",
+  m.def("read_uniform_mesh",
         &ReadTriangleMeshObj, "");
+
+  m.def("write_uniform_mesh",
+        &WriteUniformMesh);
 }

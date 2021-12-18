@@ -43,5 +43,5 @@ external/eigenlib
 external/alembiclib
 external/Imathlib
 .DS_Store
-!examples/asset/bunny_1k.obj
 *.abc
+!examples/asset/bunny_1k.obj
