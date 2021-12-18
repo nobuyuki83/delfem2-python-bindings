@@ -3,8 +3,11 @@ import numpy
 
 sys.path.append(os.path.join(
     os.path.dirname(__file__), '..'))
-import delfem2
-from delfem2.delfem2 import BVH, get_meshtri3_rigbones_octahedron
+import delfem2.mesh
+from delfem2.delfem2 import \
+    BVH, \
+    get_meshtri3_rigbones_octahedron, \
+    get_joint_position_history_bvh
 from delfem2.delfem2 import AlembicOPolyMesh
 
 
@@ -33,7 +36,7 @@ def main():
     bb = bvh.minmax_xyz()
     print("skeleton_size", bb)
 
-    abc_opolymesh = AlembicOPolyMesh("hoge.abc",0.03)
+    abc_opolymesh = AlembicOPolyMesh("hoge.abc", 0.03)
     for iframe in range(bvh.nframe):
         bvh.set_frame(iframe)
         V, F = get_meshtri3_rigbones_octahedron(bvh)
@@ -41,6 +44,22 @@ def main():
             abc_opolymesh.set_mesh(V, F)
         else:
             abc_opolymesh.set_vertices(V)
+
+    joint_positions = get_joint_position_history_bvh(bvh)
+
+    V = joint_positions[:, 0, :].copy()
+    E = numpy.array([[i, i + 1] for i in range(V.shape[0] - 1)])
+    delfem2.mesh.write_uniform_mesh("trajectory_root.obj", V, E)
+
+    list_VE = []
+    for ind_j in {0, 5, 11, 18, 23, 32}:
+        V = joint_positions[:, ind_j, :].copy()
+        E = numpy.array([[i, i + 1] for i in range(joint_positions.shape[0] - 1)])
+        list_VE.append( [V,E] )
+    V, E = delfem2.mesh.concat(list_VE)
+    delfem2.mesh.write_uniform_mesh("trajectories.obj", V, E)
+
+
 
 
 if __name__ == "__main__":
