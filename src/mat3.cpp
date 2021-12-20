@@ -63,6 +63,15 @@ auto pyMat3_AxisAngleVectorCartesian(
   return y;
 }
 
+auto pyMultiply_Quaternion_Quaternion(
+  const std::array<double, 4> &q0,
+  const std::array<double, 4> &q1)
+{
+  py::array_t<double> y{4};
+  delfem2::QuatQuat(y.mutable_data(), q0.data(), q1.data());
+  return y;
+}
+
 void init_mat3(py::module &m) {
   m.def(
     "mat3_from_euler_angle",
@@ -82,4 +91,7 @@ void init_mat3(py::module &m) {
   m.def(
     "mat3_from_cartesian_axis_angle_vector",
     pyMat3_AxisAngleVectorCartesian);
+  m.def(
+    "multiply_quaternion_quaternion",
+    pyMultiply_Quaternion_Quaternion);
 }
