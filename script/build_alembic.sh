@@ -1,4 +1,7 @@
-
+brew install boost
+pip3 install numpy
+BOOST_ROOT=`echo $(brew --cellar boost)/$(brew list --versions boost | tr ' ' '\n' | tail -1)`
+echo ${BOOST_ROOT}
 
 echo "################################"
 echo "build Imath"
@@ -11,11 +14,14 @@ git pull origin master
 mkdir build
 cd build || exit
 cmake .. \
-  -DBUILD_SHARED_LIBS=OFF \
-  -DBUILD_TESTING=OFF
+  -DPYTHON:BOOL="1" \
+  -DBOOST_ROOT:PATH=${BOOST_ROOT} 
 cmake --build .
 cmake --install . --prefix ../../Imathlib
 cd ../../../
+
+Imath_dir=$(pwd)/../../Imathlib
+echo "Imath_dir: ${Imath_dir}"
 
 echo "################################"
 echo "build alembic"
@@ -27,14 +33,10 @@ git checkout master
 git pull origin master
 mkdir build
 cd build || exit
-Imath_dir=$(pwd)/../../Imathlib
-echo "Imath_dir: ${Imath_dir}"
 cmake .. \
-  -DALEMBIC_SHARED_LIBS=OFF \
-  -DBUILD_TESTING=OFF \
-  -DCMAKE_PREFIX_PATH=${Imath_dir} \
-  -DUSE_PYALEMBIC=OFF\
-  -DPYALEMBIC_PYTHON_MAJOR=3
+  -DUSE_PYALEMBIC:BOOL="1" \
+  -DBOOST_ROOT:PATH=${BOOST_ROOT} \
+  -DCMAKE_PREFIX_PATH=${Imath_dir} 
 cmake --build . --config Release
 cmake --install . --prefix ../../alembiclib
 cd ../../../

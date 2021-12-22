@@ -11,6 +11,9 @@ from .delfem2 import draw_meshtri3_edge
 
 
 def concat(list_VE: list):
+    if len(list_VE) == 0:
+        return
+    assert len(list_VE[0]) == 2
     V = list_VE[0][0]
     E = list_VE[0][1]
     for il in range(1, len(list_VE)):
