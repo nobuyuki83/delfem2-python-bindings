@@ -59,7 +59,7 @@ auto pyMat3_AxisAngleVectorCartesian(
   const std::array<double, 3> &aa)
 {
   py::array_t<double> y{{3, 3}};
-  delfem2::Mat3_Rotation_Cartesian(y.mutable_data(), aa.data());
+  delfem2::Mat3_RotMatFromAxisAngleVec(y.mutable_data(), aa.data());
   return y;
 }
 
