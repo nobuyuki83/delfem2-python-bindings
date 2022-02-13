@@ -58,8 +58,8 @@ jobs:
           
           git submodule update --init -- external/Imath
           cd external/Imath || exit
-          git checkout master
-          git pull origin master
+          git checkout main
+          git pull origin main
           mkdir build
           cd build || exit
           cmake .. -DBUILD_TESTING=OFF
