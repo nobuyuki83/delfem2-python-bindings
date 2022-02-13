@@ -58,9 +58,7 @@ auto pyEulerAngle_Mat3(
 auto pyMat3_AxisAngleVectorCartesian(
   const std::array<double, 3> &aa)
 {
-  py::array_t<double> y{{3, 3}};
-  delfem2::Mat3_RotMatFromAxisAngleVec(y.mutable_data(), aa.data());
-  return y;
+  return delfem2::Mat3_RotMatFromAxisAngleVec(aa);
 }
 
 auto pyMultiply_Quaternion_Quaternion(
