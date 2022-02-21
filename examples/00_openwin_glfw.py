@@ -32,7 +32,7 @@ def keyfunc_callback(win_glfw, key, scancode, action, mods):
 def main():
     global nav
 
-    V, F = dfm2.mesh.read_triangle_mesh(
+    V, F = dfm2.mesh.read_uniform_mesh(
         os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
     V *= 0.02
     print(V.shape, F.shape)

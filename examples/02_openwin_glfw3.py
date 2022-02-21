@@ -14,7 +14,7 @@ import delfem2.plot3
 import delfem2.drawer_axisxyz
 import delfem2.drawer_mesh
 
-V, F = dfm2.mesh.read_triangle_mesh(
+V, F = dfm2.mesh.read_uniform_mesh(
     os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
 V -= numpy.average(V,axis=0)
 V /= V.max() - V.min()

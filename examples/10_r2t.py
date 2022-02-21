@@ -65,7 +65,7 @@ def affinematrix_projection_orthogonal(num_res_x, num_res_y, len_pix, z_range):
 
 
 def main():
-    V, F = dfm2.mesh.read_triangle_mesh(
+    V, F = dfm2.mesh.read_uniform_mesh(
         os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
     V -= np.average(V, axis=0)
     V /= np.max(V) - np.min(V)
