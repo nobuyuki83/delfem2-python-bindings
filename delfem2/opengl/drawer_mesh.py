@@ -1,8 +1,8 @@
 import OpenGL.GL as gl
 import numpy
 
+from ..delfem2 import MESH_ELEM_TYPE, num_node_elem
 from .delfem2 import glad_load_gl, setup_glsl
-from .delfem2 import MESH_ELEM_TYPE, num_node_elem
 from .delfem2 import draw_mesh_facenorm, draw_meshtri3_edge
 
 class DrawerMesh:

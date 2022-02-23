@@ -12,16 +12,17 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 
 import delfem2 as dfm2
 import delfem2.mesh
-import delfem2.drawer_mesh
-import delfem2.plot3
-import delfem2.render_to_texture
-import delfem2.drawer_axisxyz
-from delfem2.invisible_window_glfw import InVisibleWindowGLFW
+import delfem2.opengl.drawer_mesh
+import delfem2.opengl.plot3
+import delfem2.opengl.render_to_texture
+import delfem2.opengl.drawer_axisxyz
+from delfem2.opengl.invisible_window_glfw import InVisibleWindowGLFW
+from delfem2.opengl.delfem2 import glad_load_gl
 
 
 def show_default(drawer, r2t):
     with InVisibleWindowGLFW([512, 512]):
-        dfm2.glad_load_gl()
+        glad_load_gl()
         if hasattr(drawer, "init_gl"):
             drawer.init_gl()
         r2t.init_gl()
@@ -32,9 +33,9 @@ def show_default(drawer, r2t):
         drawer.draw()
         r2t.end()
 
-    drawer_r2t = delfem2.render_to_texture.DrawerRender2Tex(r2t)
+    drawer_r2t = delfem2.opengl.render_to_texture.DrawerRender2Tex(r2t)
     drawer_r2t.drawer.color_point = [1, 0, 0, 1]
-    dfm2.plot3.plot3(
+    delfem2.opengl.plot3.plot3(
         [drawer, drawer_r2t], duration=-1,
         camera_rotation=(math.pi * 0.1, math.pi * 0.4, math.pi * 0.0))
 
@@ -70,11 +71,11 @@ def main():
     V -= np.average(V, axis=0)
     V /= np.max(V) - np.min(V)
 
-    drawer_mesh = delfem2.drawer_mesh.DrawerMesh(
+    drawer_mesh = delfem2.opengl.drawer_mesh.DrawerMesh(
         V, F, dfm2.mesh.TRI,
         is_draw_edge=True, is_draw_face=True)
 
-    r2t = dfm2.render_to_texture.Render2Tex(
+    r2t = delfem2.opengl.render_to_texture.Render2Tex(
         width=256, height=256, is_rgba_8ui=True)
 
     show_default(drawer_mesh, r2t)
@@ -97,14 +98,14 @@ def main():
     gl_FragColor = vec4(0.5+0.5*vNormal.x, 0.5-0.5*vNormal.y, 0.5*vNormal.z+0.5, 1.0); \n\
     }"
 
-    drawer_mesh = delfem2.drawer_mesh.DrawerMesh(
+    drawer_mesh = delfem2.opengl.drawer_mesh.DrawerMesh(
         V, F, dfm2.mesh.TRI,
         is_draw_edge=False, is_draw_face=True,
         glsl_vtx=str_glsl_vrt, glsl_frag=str_glsl_frg)
 
     show_default(drawer_mesh, r2t)
 
-    r2t = dfm2.render_to_texture.Render2Tex(
+    r2t = delfem2.opengl.render_to_texture.Render2Tex(
         width=512, height=256, is_rgba_8ui=True,
         affinematrix_modelview=affinematrix_modelview_localcoordinate(
             np.array([0, 0, 0]), np.array([0, 1, 0]), np.array([1, 0, 0])),

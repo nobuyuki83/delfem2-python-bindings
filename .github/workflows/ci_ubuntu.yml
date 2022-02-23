@@ -88,8 +88,26 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: build
         run: |
+          cd src
           mkdir build
           cd build
           cmake ..
           make
-          
+          cd ../..
+
+          cd src/opengl
+          mkdir build
+          cd build
+          cmake ..
+          make 
+          cd ../../../
+
+          cd src/alembic
+          mkdir build
+          cd build
+          camke ..
+          make
+          cd ../../../
+
+
+

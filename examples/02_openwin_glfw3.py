@@ -10,16 +10,16 @@ import numpy
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import delfem2.mesh
-import delfem2.plot3
-import delfem2.drawer_axisxyz
-import delfem2.drawer_mesh
+import delfem2.opengl.drawer_mesh
+import delfem2.opengl.drawer_axisxyz
+import delfem2.opengl.plot3
 
 V, F = dfm2.mesh.read_uniform_mesh(
     os.path.join(os.path.dirname(__file__), "asset", "bunny_1k.obj"))
 V -= numpy.average(V,axis=0)
 V /= V.max() - V.min()
 
-axis_xyz = delfem2.drawer_axisxyz.AxisXYZ()
-drawer = delfem2.drawer_mesh.DrawerMesh(V,F)
+axis_xyz = delfem2.opengl.drawer_axisxyz.AxisXYZ()
+drawer = delfem2.opengl.drawer_mesh.DrawerMesh(V,F)
 
-dfm2.plot3.plot3([axis_xyz,drawer], winsize=(400, 300))
+delfem2.opengl.plot3.plot3([axis_xyz, drawer], winsize=(400, 300))

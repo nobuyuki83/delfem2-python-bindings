@@ -1,5 +1,4 @@
 import glfw
-from delfem2.camera import Camera
 
 
 class NavigationGLFW:

@@ -1,6 +1,6 @@
 
 from typing import List
-from delfem2.window_glfw import WindowGLFW
+from delfem2.opengl.window_glfw import WindowGLFW
 
 class InVisibleWindowGLFW:
     def __init__(self,

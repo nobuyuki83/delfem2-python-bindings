@@ -8,7 +8,7 @@ from delfem2.delfem2 import \
     BVH, \
     get_meshtri3_rigbones_octahedron, \
     get_joint_position_history_bvh
-from delfem2.delfem2 import AlembicOPolyMesh
+from delfem2.alembic.delfem2 import AlembicOPolyMesh
 
 
 def norm_l2(a, b):

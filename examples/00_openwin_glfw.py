@@ -11,8 +11,8 @@ import os, sys
 sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import delfem2.mesh
-from delfem2.navigation_glfw import NavigationGLFW
-from delfem2.camera import Camera
+from delfem2.opengl.navigation_glfw import NavigationGLFW
+from delfem2.opengl.camera import Camera
 
 camera = Camera()
 nav = NavigationGLFW(1.0)
@@ -56,7 +56,7 @@ def main():
         camera.set_gl_camera()
         gl.glColor3d(0, 0, 0)
         gl.glDisable(gl.GL_LIGHTING)
-        dfm2.mesh.draw_meshtri3_edge(V, F)
+        dfm2.opengl.draw_meshtri3_edge(V, F)
         glfw.swap_buffers(win_glfw)
         glfw.poll_events()
         if nav.isClose:

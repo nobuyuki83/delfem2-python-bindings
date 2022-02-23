@@ -7,8 +7,8 @@
 
 import OpenGL.GL as gl
 import glfw
-from delfem2.navigation_glfw import NavigationGLFW
-from delfem2.camera import Camera
+from delfem2.opengl.navigation_glfw import NavigationGLFW
+from delfem2.opengl.camera import Camera
 
 class WindowGLFW:
     """

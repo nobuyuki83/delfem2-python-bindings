@@ -6,9 +6,6 @@ from .delfem2 import \
     write_uniform_mesh
 from .delfem2 import TRI
 
-# opengl
-from .delfem2 import draw_meshtri3_edge
-
 
 def concat(list_VE: list):
     if len(list_VE) == 0:

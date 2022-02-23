@@ -1,7 +1,7 @@
 import numpy
 import OpenGL.GL as gl
-from delfem2.window_glfw import WindowGLFW
-from delfem2 import glad_load_gl
+from delfem2.opengl.window_glfw import WindowGLFW
+from delfem2.opengl.delfem2 import glad_load_gl
 
 def _add_aabb3(
         lhs: list,

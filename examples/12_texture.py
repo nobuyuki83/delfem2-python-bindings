@@ -11,15 +11,16 @@ sys.path.append(os.path.join(os.path.dirname(__file__),'..'))
 import delfem2 as dfm2
 import numpy as np
 from PIL import Image
-from delfem2.drawer_axisxyz import AxisXYZ
-from delfem2.plot3 import plot3
+from delfem2.opengl.drawer_axisxyz import AxisXYZ
+from delfem2.opengl.plot3 import plot3
+from delfem2.opengl.delfem2 import get_texture
 
 def main():
   pil_image_lenna = Image.open(
     os.path.join(os.path.dirname(__file__), "asset", "lenna.png"))
   np_img = np.array(pil_image_lenna)
   axis = AxisXYZ(100)
-  tex = dfm2.get_texture(np_img)
+  tex = get_texture(np_img)
   plot3([axis,tex],winsize=(400,300),
           camera_rotation=[math.pi, 0, 0])
 

@@ -17,33 +17,33 @@ project(delfem2)
 # dependencies setting
 
 # eigen
-set(Eigen3_DIR ${PROJECT_SOURCE_DIR}/external/eigenlib)
+set(Eigen3_DIR ${PROJECT_SOURCE_DIR}/../../external/eigenlib)
 FIND_PACKAGE(Eigen3 REQUIRED)
 get_target_property(EIGEN_INCLUDE_DIR Eigen3::Eigen INTERFACE_INCLUDE_DIRECTORIES)
 message(STATUS "eigen include dir: ${EIGEN_INCLUDE_DIR}")
 
 # pybind11
-If(EXISTS ${PROJECT_SOURCE_DIR}/external/pybind11/CMakeLists.txt)
-  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/external/pybind11)
-ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../pybind11/CMakeLists.txt)
-  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/../pybind11)
+If(EXISTS ${PROJECT_SOURCE_DIR}/../../external/pybind11/CMakeLists.txt)
+  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/../../external/pybind11)
+ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../../pybind11/CMakeLists.txt)
+  set(PYBIND11_DIR ${PROJECT_SOURCE_DIR}/../../pybind11)
 ENDIF()
 message(STATUS "pybind11 dir: ${PYBIND11_DIR}")
 
 # delfem2
-If(EXISTS ${PROJECT_SOURCE_DIR}/external/delfem2/include)
-  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/external/delfem2)
-ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../delfem2/include)
-  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/../delfem2)
+If(EXISTS ${PROJECT_SOURCE_DIR}/../../external/delfem2/include)
+  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/../../external/delfem2)
+ELSEIF(EXISTS ${PROJECT_SOURCE_DIR}/../../delfem2/include)
+  set(DELFEM2_DIR ${PROJECT_SOURCE_DIR}/../../delfem2)
 ENDIF()
 message(STATUS "delfem2 dir: ${DELFEM2_DIR}")
 
 # imath
-set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/external/Imathlib)
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/../../external/Imathlib)
 FIND_PACKAGE(Imath)
 
 # alembic
-set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/external/alembiclib)
+set(CMAKE_PREFIX_PATH ${PROJECT_SOURCE_DIR}/../../external/alembiclib)
 FIND_PACKAGE(Alembic)
 
 ##########################################################
@@ -54,14 +54,12 @@ PUBLIC
     Alembic::Alembic
     ${DELFEM2_DIR}/include
     ${EIGEN_INCLUDE_DIR}
-    ${PROJECT_SOURCE_DIR}/external/glad3/include
 )
 
 file(GLOB SRC_FILES
-    ${PROJECT_SOURCE_DIR}/src/*.cpp)
+    ${PROJECT_SOURCE_DIR}/*.cpp)
 set(INPUT_SRC
     ${SRC_FILES}
-    ${PROJECT_SOURCE_DIR}/external/glad3/src/glad.c
     )
 
 message(STATUS "src paths: ${SRC_FILES}")
@@ -95,7 +93,7 @@ else()
   POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy 
       ${PROJECT_BINARY_DIR}/${CMAKE_CFG_INTDIR}/${PROJECT_NAME}.*
-      ${PROJECT_SOURCE_DIR}/delfem2
+      ${PROJECT_SOURCE_DIR}/../../delfem2/alembic
     COMMENT "Post Event"
   )
 endif()
